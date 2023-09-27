@@ -1,0 +1,8 @@
+clc;
+clear all;
+[baseweek, esec, NS, Eph] = almanac();
+esec24=esec+24*3600;
+min5=5*60;
+for interval=esec24:min5:esec
+    disp(interval)
+end
