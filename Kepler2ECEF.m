@@ -1,4 +1,4 @@
-function[x,y,z,aux] = Kepler2ECEF(a,i_o,e,Omega_o,Omega_o_prima,w,M_o,n,dt)
+function[x,y,z] = Kepler2ECEF(a,i_o,e,Omega_o,Omega_o_prima,w,M_o,n,dt)
     AngSpeedEarth=7.2921151467e-5;%Angular speed of Earth rotation
     M_k = M_o + n * dt;%Current mean anomaly
     error = 100;
@@ -10,7 +10,7 @@ function[x,y,z,aux] = Kepler2ECEF(a,i_o,e,Omega_o,Omega_o_prima,w,M_o,n,dt)
        error = abs(E_k(aux) - E_k(aux-1));
     end
     E_k=E_k(aux);%Current eccentric anomaly
-    sin_vk = ((sqrt(1-e^2))*sin(E_k))/(1-e*cos(E_k));
+    sin_vk = sin(((sqrt(1-e^2))*sin(E_k))/(1-e*cos(E_k)));
     cos_vk = (cos(E_k)-e)/(1-e*cos(E_k));
     v_k = atan2(sin_vk,cos_vk);%True anomaly without ambiguity
     u_k = v_k + w;%Argument of latitude
