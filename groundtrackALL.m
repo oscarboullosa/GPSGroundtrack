@@ -1,24 +1,22 @@
 clear;
+
+% Obtain almanac data
 [baseweek, esec, NS, Eph] = almanac();
-esec24=esec+24*3600;
-min5=5*60;
-satellite=9;
+[numRows, numColumns] = size(Eph);
+
+% Constants
+G = 6.67384e-11;  % Gravitational Constant
+M = 5.972e24;     % Earth mass
+AngSpeedEarth = 7.2921151467e-5;  % Angular speed of Earth rotation
+
+% Current time
+%t = esec;
 Map=load("world_110m.txt");
 plot(Map(:,1),Map(:,2),'.');
 hold on;
-for interval=esec:min5:esec24
-    [numRows, numColumns] = size(Eph);
-    
-    % Constants
-    G = 6.67384e-11;  % Gravitational Constant
-    M = 5.972e24;     % Earth mass
-    AngSpeedEarth = 7.2921151467e-5;  % Angular speed of Earth rotation
-    
-    % Current time
-    t = interval;
-    
+for satellite=1:1:31
+    for t=esec:60:3600
     % Satellite selection and relevant parameters
-    satellite = 5;
     t0 = Eph(satellite, 4);  % ToA from the almanac
     dt = t - t0;
     sqrt_a = Eph(satellite, 7);  % Square root of the semi-major axis
@@ -36,18 +34,14 @@ for interval=esec:min5:esec24
     
     % Convert ECEF to LLA
     [h, latitude, longitude] = ECEF2LLA([x, y, z]);
-    
-    % Load world map data
-    Map = load('world_110m.txt');
-    
-    % Plot world map
-    plot(Map(:, 1), Map(:, 2), '.');
-    hold on;
+    latitudeDeg=rad2deg(latitude);
+    longitudeDeg=rad2deg(longitude);
     
     % Plot satellite position in red
     plot(rad2deg(longitude), rad2deg(latitude), '*');
     hold on;
     
     % Display satellite number
-    %text(longitude + 2, latitude + 1, sprintf('%d', Eph(satellite, 1)));
+    text(rad2deg(longitude + 0.1), rad2deg(latitude + 0.05), sprintf('%d', Eph(satellite, 1)));
+    end
 end
