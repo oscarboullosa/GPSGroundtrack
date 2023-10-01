@@ -10,12 +10,12 @@ M = 5.972e24;     % Earth mass
 AngSpeedEarth = 7.2921151467e-5;  % Angular speed of Earth rotation
 
 % Current time
-t = esec;
+%t = esec;
 Map=load("world_110m.txt");
 plot(Map(:,1),Map(:,2),'.');
 hold on;
 for satellite=1:1:31
-    for 
+    for t=esec:60:300
     % Satellite selection and relevant parameters
     t0 = Eph(satellite, 4);  % ToA from the almanac
     dt = t - t0;
@@ -43,4 +43,5 @@ for satellite=1:1:31
     
     % Display satellite number
     text(rad2deg(longitude + 0.1), rad2deg(latitude + 0.05), sprintf('%d', Eph(satellite, 1)));
+    end
 end

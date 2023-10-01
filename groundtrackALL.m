@@ -9,39 +9,55 @@ G = 6.67384e-11;  % Gravitational Constant
 M = 5.972e24;     % Earth mass
 AngSpeedEarth = 7.2921151467e-5;  % Angular speed of Earth rotation
 
-% Current time
-%t = esec;
-Map=load("world_110m.txt");
-plot(Map(:,1),Map(:,2),'.');
+% Map data
+Map = load("world_110m.txt");
+
+% Set the time range and interval
+start_time = esec;  % Start time in seconds
+end_time = esec + 60;  % End time in seconds
+time_interval = 1;  % Interval of 1 minute in seconds
+
+% Plot the map
+plot(Map(:, 1), Map(:, 2), '.');
 hold on;
-for satellite=1:1:31
-    for t=esec:60:3600
-    % Satellite selection and relevant parameters
-    t0 = Eph(satellite, 4);  % ToA from the almanac
-    dt = t - t0;
-    sqrt_a = Eph(satellite, 7);  % Square root of the semi-major axis
-    a = sqrt_a^2;  % Semi-major axis
-    n = sqrt((G * M) / a^3);  % Mean motion
-    Omega_o_prima = Eph(satellite, 8);  % Longitude of the ascending node at the GPS week epoch
-    w = Eph(satellite, 9);  % Argument of the perigee at ToA
-    Omega_o = Omega_o_prima - AngSpeedEarth * t0;  % Longitude of the ascending node at the ToA
-    M_o = Eph(satellite, 10);
-    i_o = Eph(satellite, 5);
-    e = Eph(satellite, 3);
-    
-    % Compute ECEF coordinates
-    [x, y, z] = Kepler2ECEF(a, i_o, e, Omega_o, Omega_o_prima, w, M_o, n, dt);
-    
-    % Convert ECEF to LLA
-    [h, latitude, longitude] = ECEF2LLA([x, y, z]);
-    latitudeDeg=rad2deg(latitude);
-    longitudeDeg=rad2deg(longitude);
-    
-    % Plot satellite position in red
-    plot(rad2deg(longitude), rad2deg(latitude), '*');
-    hold on;
-    
-    % Display satellite number
-    text(rad2deg(longitude + 0.1), rad2deg(latitude + 0.05), sprintf('%d', Eph(satellite, 1)));
+
+% Iterate over each satellite
+for satellite = 1:31
+    % Iterate over the specified time range with the given interval
+    for t = start_time:time_interval:end_time
+        % Satellite selection and relevant parameters
+        t0 = Eph(satellite, 4);  % ToA from the almanac
+        dt = t - t0;
+        sqrt_a = Eph(satellite, 7);  % Square root of the semi-major axis
+        a = sqrt_a^2;  % Semi-major axis
+        n = sqrt((G * M) / a^3);  % Mean motion
+        Omega_o_prima = Eph(satellite, 8);  % Longitude of the ascending node at the GPS week epoch
+        w = Eph(satellite, 9);  % Argument of the perigee at ToA
+        Omega_o = Omega_o_prima - AngSpeedEarth * t0;  % Longitude of the ascending node at the ToA
+        M_o = Eph(satellite, 10);
+        i_o = Eph(satellite, 5);
+        e = Eph(satellite, 3);
+        
+        % Compute ECEF coordinates
+        [x, y, z] = Kepler2ECEF(a, i_o, e, Omega_o, Omega_o_prima, w, M_o, n, dt);
+        
+        % Convert ECEF to LLA
+        [h, latitude, longitude] = ECEF2LLA([x, y, z]);
+        latitudeDeg = rad2deg(latitude);
+        longitudeDeg = rad2deg(longitude);
+        
+        % Plot satellite position in red
+        plot(rad2deg(longitude), rad2deg(latitude), '.');
+        hold on;
+        
+        % Display satellite number
+      
+        
+            %text(rad2deg(longitude + 0.1), rad2deg(latitude + 0.05), sprintf('%d', Eph(satellite, 1)));
+         
     end
 end
+
+xlabel('Longitude (degrees)');
+ylabel('Latitude (degrees)');
+title('Satellite Positions');
