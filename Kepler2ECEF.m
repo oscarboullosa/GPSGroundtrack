@@ -1,8 +1,8 @@
-function[x,y,z] = Kepler2ECEF(a,i_o,e,Omega_o,Omega_o_prima,w,M_o,n,dt)
+function[x,y,z] = Kepler2ECEF(a,i_o,e,Omega_o,Omega_o_punto,w,M_o,n,dt)
     AngSpeedEarth = 7.2921151467e-5;  % Angular speed of Earth rotation
     
     % Calculate Omega_k once and keep it constant
-    Omega_k = deg2rad(Omega_o) + deg2rad(Omega_o_prima) * dt - AngSpeedEarth * dt;  % Convertir a radianes
+    Omega_k = Omega_o + Omega_o_punto * dt - AngSpeedEarth * dt;  % Convertir a radianes
     
     M_k = M_o + n * dt;  % Current mean anomaly
     error = 100;

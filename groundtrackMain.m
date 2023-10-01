@@ -26,13 +26,14 @@ for interval=esec:min5:esec24
     n = sqrt((G * M) / a^3);  % Mean motion
     Omega_o_prima = Eph(satellite, 8);  % Longitude of the ascending node at the GPS week epoch
     w = Eph(satellite, 9);  % Argument of the perigee at ToA
+    Omega_o_punto=Eph(satellite,6);
     Omega_o = Omega_o_prima - AngSpeedEarth * t0;  % Longitude of the ascending node at the ToA
     M_o = Eph(satellite, 10);
     i_o = Eph(satellite, 5);
     e = Eph(satellite, 3);
     
     % Compute ECEF coordinates
-    [x, y, z] = Kepler2ECEF(a, i_o, e, Omega_o, Omega_o_prima, w, M_o, n, dt);
+    [x, y, z] = Kepler2ECEF(a, i_o, e, Omega_o, Omega_o_punto, w, M_o, n, dt);
     
     % Convert ECEF to LLA
     [h, latitude, longitude] = ECEF2LLA([x, y, z]);
@@ -48,6 +49,8 @@ for interval=esec:min5:esec24
     plot(rad2deg(longitude), rad2deg(latitude), '*');
     hold on;
     
-    % Display satellite number
-    %text(longitude + 2, latitude + 1, sprintf('%d', Eph(satellite, 1)));
+    
 end
+% Display satellite number
+    text(0, 0, sprintf('%d', Eph(satellite, 1)));
+

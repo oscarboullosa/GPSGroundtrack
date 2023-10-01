@@ -14,8 +14,8 @@ Map = load("world_110m.txt");
 
 % Set the time range and interval
 start_time = esec;  % Start time in seconds
-end_time = esec + 60;  % End time in seconds
-time_interval = 1;  % Interval of 1 minute in seconds
+end_time = esec + 3000;  % End time in seconds
+time_interval = 20;  % Interval of 1 minute in seconds
 
 % Plot the map
 plot(Map(:, 1), Map(:, 2), '.');
@@ -37,9 +37,10 @@ for satellite = 1:31
         M_o = Eph(satellite, 10);
         i_o = Eph(satellite, 5);
         e = Eph(satellite, 3);
+        Omega_o_punto=Eph(satellite,6);
         
         % Compute ECEF coordinates
-        [x, y, z] = Kepler2ECEF(a, i_o, e, Omega_o, Omega_o_prima, w, M_o, n, dt);
+        [x, y, z] = Kepler2ECEF(a, i_o, e, Omega_o, Omega_o_punto, w, M_o, n, dt);
         
         % Convert ECEF to LLA
         [h, latitude, longitude] = ECEF2LLA([x, y, z]);
