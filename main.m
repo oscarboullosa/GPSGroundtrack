@@ -13,7 +13,7 @@ AngSpeedEarth = 7.2921151467e-5;  % Angular speed of Earth rotation
 t = esec;
 
 % Satellite selection and relevant parameters
-satellite = 5;
+satellite = 12;
 t0 = Eph(satellite, 4);  % ToA from the almanac
 dt = t - t0;
 sqrt_a = Eph(satellite, 7);  % Square root of the semi-major axis
@@ -44,6 +44,9 @@ hold on;
 % Plot satellite position in red
 plot(rad2deg(longitude), rad2deg(latitude), '*');
 hold on;
+title('Posición actual satélite');
+xlabel('Longitud')
+ylabel('Latitud')
 
 % Display satellite number
 text(rad2deg(longitude + 0.1), rad2deg(latitude + 0.05), sprintf('%d', Eph(satellite, 1)));

@@ -2,10 +2,12 @@ clear;
 [baseweek, esec, NS, Eph] = almanac();
 esec24=esec+24*3600;
 min5=5*60;
-satellite=9;
 Map=load("world_110m.txt");
 plot(Map(:,1),Map(:,2),'.');
 hold on;
+title('Ground Track Periodo Orbital Satélite 3');
+xlabel('Longitud')
+ylabel('Latitud')
 for interval=esec:min5:esec24
     [numRows, numColumns] = size(Eph);
     
@@ -18,7 +20,7 @@ for interval=esec:min5:esec24
     t = interval;
     
     % Satellite selection and relevant parameters
-    satellite = 5;
+    satellite = 2;
     t0 = Eph(satellite, 4);  % ToA from the almanac
     dt = t - t0;
     sqrt_a = Eph(satellite, 7);  % Square root of the semi-major axis

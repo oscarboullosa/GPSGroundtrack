@@ -14,8 +14,9 @@ Map = load("world_110m.txt");
 
 % Set the time range and interval
 start_time = esec;  % Start time in seconds
-end_time = esec + 3000;  % End time in seconds
-time_interval = 20;  % Interval of 1 minute in seconds
+end_time = esec + 3600;  % End time in seconds 60 min
+time_interval = 20;  % Interval of 20 seconds
+
 
 % Plot the map
 plot(Map(:, 1), Map(:, 2), '.');
@@ -23,6 +24,7 @@ hold on;
 
 % Iterate over each satellite
 for satellite = 1:31
+    aux=0;
     % Iterate over the specified time range with the given interval
     for t = start_time:time_interval:end_time
         % Satellite selection and relevant parameters
@@ -52,11 +54,14 @@ for satellite = 1:31
         hold on;
         
         % Display satellite number
-      
-        
-            %text(rad2deg(longitude + 0.1), rad2deg(latitude + 0.05), sprintf('%d', Eph(satellite, 1)));
+            
+          if(aux<1)
+                text(rad2deg(longitude + 0.05), rad2deg(latitude + 0.05), sprintf('%d', Eph(satellite, 1)));
+                aux=aux+1;
+            end  
          
     end
+
 end
 
 xlabel('Longitude (degrees)');
